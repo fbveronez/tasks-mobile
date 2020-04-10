@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, StyleSheet, FlatList, ShadowPropTypesIOS } from 'react-native'
+import { View, Text, ImageBackground, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native'
 import todayImage from '../../assets/imgs/today.jpg'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import CommonStyles from '../commonStyles'
 import Task from '../components/Task'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+
 
 export default class TaskList extends Component {
 
     state = {
+        showDoneTask: true,
         tasks: [{
             id: Math.random(),
             desc: "Comprar livro de React Native",
@@ -20,6 +24,10 @@ export default class TaskList extends Component {
             estimateAt: new Date(),
             doneAt: null,
         }]
+    }
+
+    toggleFilter = () =>{
+        this.setState({showDoneTask: !this.state.showDoneTask})
     }
 
     toggleTask = taskId =>{
@@ -38,6 +46,13 @@ export default class TaskList extends Component {
         return (
             <View style={styles.container} >
                 <ImageBackground style={styles.background} source={todayImage}>
+                    <View style={styles.iconBar}>
+                        <TouchableOpacity onPress={this.toggleFilter}>
+                            <Icon name={this.state.showDoneTask ? 'eye' :  'eye-slash'} 
+                            size={20} color={CommonStyles.colors.secondary}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.titleBar} >
                         <Text style={styles.title} >Hoje</Text>
                         <Text style={styles.subtitle}>{today}</Text>
@@ -79,5 +94,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 20,
         marginBottom: 30,
+    },
+    iconBar:{
+        flexDirection: 'row',
+
     }
 })
