@@ -4,6 +4,7 @@ import todayImage from '../../assets/imgs/today.jpg'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import CommonStyles from '../commonStyles'
+import Task from '../components/Task'
 
 export default class TaskList extends Component {
     render() {
@@ -17,9 +18,8 @@ export default class TaskList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.taskList}>
-                    <Text>
-                        Tarefa #1
-                    </Text>
+                    <Task desc="Comprar Livro" estimateAt={new Date()} doneAt={new Date()} />
+                    <Task desc="Ler Livro" estimateAt={new Date()} doneAt={null} /> 
                 </View>
             </View>
         )
