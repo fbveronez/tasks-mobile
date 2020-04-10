@@ -5,7 +5,9 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import CommonStyles from '../commonStyles'
 import Task from '../components/Task'
+import AddTask from './AddTask'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import AddTaks from './AddTask'
 
 
 
@@ -14,6 +16,7 @@ export default class TaskList extends Component {
     state = {
         showDoneTask: true,
         visibleTasks: [],
+        showAddTask:true,
         tasks: [{
             id: Math.random(),
             desc: "Comprar livro de React Native",
@@ -62,6 +65,7 @@ export default class TaskList extends Component {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return (
             <View style={styles.container} >
+                <AddTaks  isVisible={this.state.showAddTask} onCancel={() => this.setState({showAddTask: false})}/>
                 <ImageBackground style={styles.background} source={todayImage}>
                     <View style={styles.iconBar}>
                         <TouchableOpacity onPress={this.toggleFilter}>
