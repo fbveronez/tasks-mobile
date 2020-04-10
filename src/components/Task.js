@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import CommonStyles from '../commonStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -9,14 +9,16 @@ import 'moment/locale/pt-br'
 
 export default props => {
 
-    const doneOrNotStyle = props.doneAt != null ? {textDecorationLine: 'line-through'} : {}
-    const date = props.doneAt ? props.doneAt : props.estimateAt 
+    const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {}
+    const date = props.doneAt ? props.doneAt : props.estimateAt
     const formatteddate = moment(date).locale('pt-br').format('ddd, D [de] MMMM')
     return (
         <View style={styles.container}>
-            <View style={styles.checkContainer}>
-                {getCheckView(props.doneAt)}
-            </View>
+            <TouchableWithoutFeedback onPress={() => props.toggleTask(props.id)}>
+                <View style={styles.checkContainer}>
+                    {getCheckView(props.doneAt)}
+                </View>
+            </TouchableWithoutFeedback>
             <View>
                 <Text style={[styles.desc, doneOrNotStyle]}> {props.desc}</Text>
                 <Text style={styles.date}> {formatteddate} </Text>
@@ -47,38 +49,38 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignItems: 'center',
         paddingVertical: 10,
-        
+
     },
     checkContainer: {
         width: '20%',
         alignItems: 'center',
         justifyContent: 'center'
-        
+
     },
-    pending:{
-        height:25,
-        width:25,
+    pending: {
+        height: 25,
+        width: 25,
         borderRadius: 13,
         borderWidth: 1,
         borderColor: '#555',
     },
-    done:{
-        height:25,
-        width:25,
+    done: {
+        height: 25,
+        width: 25,
         borderRadius: 13,
         backgroundColor: '#4D7031',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    desc:{
+    desc: {
         fontSize: CommonStyles.fontFamily,
         color: CommonStyles.colors.mainText,
-        fontSize:15,
+        fontSize: 15,
 
     },
-    date:{
+    date: {
         fontSize: CommonStyles.fontFamily,
         color: CommonStyles.colors.subText,
-        fontSize:12,
+        fontSize: 12,
     }
 })
