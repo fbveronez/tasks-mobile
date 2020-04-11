@@ -9,7 +9,6 @@ import {
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import CommonStyles from '../commonStyles'
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
