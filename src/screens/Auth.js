@@ -28,13 +28,13 @@ export default class Auth extends Component {
 
   signinOrSigup = () =>{
     if(this.state.stageNew){
-      this.singup()
+      this.signup()
     }else{
-      Alert.alert('Sucesso', 'Logar')
+      this.signin()
     }
   }
 
-  singup = async () =>{
+  signup = async () =>{
     try {
       await axios.post(`${server}/signup`, {
         name: this.state.name,
@@ -48,7 +48,32 @@ export default class Auth extends Component {
       showError(err)
     }
   }
+
+  signin = async () =>{
+    try {
+      const res = await axios.post(`${server}/signin`, {
+        email: this.state.email,
+        password: this.state.password
+      })
+
+      axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
+      this.props.navigation.navigate('Home')
+    } catch (err) {
+      showError(err)
+    }
+
+  }
   render() {
+
+    const validations = []
+    validations.push(this.state.email && this.state.email.includes('@'))
+    validations.push(this.state.password && this.state.password.length >= 6)
+
+    if(this.state.stageNew){
+      validations.push(this.state.name && this.state.name.trim().length >= 3)
+      validations.push(this.state.confirmPassword  === this.state.password)
+    }
+    const validForm = validations.reduce((total, actual) => total && actual)
     return (
       <ImageBackground source={backgoundImage} style={styles.background}>
         <Text style={styles.title}>Tasks</Text>
@@ -68,8 +93,8 @@ export default class Auth extends Component {
             <AuthInput icon='asterisk' placeholder="Confirmação de Senha" value={this.state.confirmPassword}
               style={styles.input} secureTextEntry={true} onChangeText={confirmPassword => this.setState({ confirmPassword })} />
           }
-          <TouchableOpacity onPress={this.signinOrSigup}>
-            <View style={styles.button}>
+          <TouchableOpacity onPress={this.signinOrSigup} disabled={!validForm}>
+            <View style={[styles.button, validForm ? {} : {backgroundColor: '#AAA'}]}>
               <Text style={styles.buttonText}>
                 {this.state.stageNew ? 'Registrar' : 'Entrar'}
                 </Text>
