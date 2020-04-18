@@ -70,15 +70,13 @@ export default class TaskList extends Component {
         }))
     }
 
-    toggleTask = taskId => {
-        const tasks = [...this.state.tasks]
-        tasks.forEach(task => {
-            if (task.id === taskId) {
-                task.doneAt = task.doneAt ? null : new Date()
-            }
-        })
-
-        this.setState({ tasks }, this.filterTasks)
+    toggleTask = async taskId => {
+        try {
+            await axios.put(`${server}/tasks/${taskId}/toggle`)
+            this.loadTasks()
+        } catch (err) {
+            showError(err)
+        }
     }
 
     addTask = async newTask => {
@@ -99,9 +97,13 @@ export default class TaskList extends Component {
         }
     }
     
-    deleteTask = id => {
-        const tasks = this.state.tasks.filter(task => task.id !== id)
-        this.setState({ tasks }, this.filterTasks)
+    deleteTask =  async id => {
+        try {
+            await axios.delete(`${server}/tasks/${id}`)
+            this.loadTasks()
+        } catch (err) {
+            showError(err)
+        }
     }
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
